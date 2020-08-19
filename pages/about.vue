@@ -9,8 +9,8 @@
                 <nuxt-link to="/" class="button--green">
                     Home
                 </nuxt-link>
-                <nuxt-link to="/api" class="button--grey">
-                    Api
+                <nuxt-link to="/user" class="button--grey">
+                    User
                 </nuxt-link>
             </div>
         </div>
@@ -20,7 +20,22 @@
 <script>
 export default {
     name: 'About',
-    middleware: 'routerMiddleware'
+    middleware: 'routerMiddleware',
+    fetch () {
+        console.log('fetch hook')
+    },
+    asyncData () {
+        console.log('asyncData hook')
+        return {
+
+        }
+    },
+    created () {
+        console.log('created hook')
+    },
+    mounted () {
+        console.log('mounted hook')
+    }
 }
 </script>
 

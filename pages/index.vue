@@ -3,14 +3,14 @@
         <div>
             <Logo />
             <h1 class="title">
-                nuxt_template
+                {{ siteName }}
             </h1>
             <div class="links">
                 <nuxt-link to="/about" class="button--green">
                     About
                 </nuxt-link>
-                <nuxt-link to="/api" class="button--grey">
-                    Api
+                <nuxt-link to="/user" class="button--grey">
+                    User
                 </nuxt-link>
             </div>
         </div>
@@ -18,8 +18,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
-    name: 'Home'
+    name: 'Home',
+    computed: {
+        ...mapState(['siteName'])
+    }
 }
 </script>
 

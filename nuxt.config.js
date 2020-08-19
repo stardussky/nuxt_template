@@ -27,6 +27,9 @@ export default {
         '@nuxtjs/axios'
     ],
     axios: {},
+    serverMiddleware: [
+        '@/server/api/index'
+    ],
     build: {
     }
 }
