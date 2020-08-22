@@ -1,11 +1,16 @@
 <template>
-    <div class="default-layout">
+    <div class="black-layout">
         <Nuxt />
     </div>
 </template>
 
 <style>
-    .default-layout .title {
+    .black-layout {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .black-layout .title {
         font-family:
             'Quicksand',
             'Source Sans Pro',
@@ -19,7 +24,7 @@
         display: block;
         font-weight: 300;
         font-size: 100px;
-        color: #35495e;
+        color: #09c58e;
         letter-spacing: 1px;
     }
 </style>

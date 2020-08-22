@@ -13,8 +13,33 @@ export const mutations = {
 }
 
 export const actions = {
-    async nuxtServerInit ({ commit }, { app }) {
-        const { data } = await app.$axios.get('/api')
-        commit('SET_SITE_NAME', data)
+    async nuxtServerInit ({ commit, dispatch }, { error }) {
+        try {
+            const data = await dispatch('GET_API', '/api')
+            commit('SET_SITE_NAME', data)
+        } catch (e) {
+            error(e)
+        }
+    },
+    GET_API (context, url, options) {
+        return new Promise((resolve, reject) => {
+            this.$axios.get(url, options).then(({ data }) => {
+                resolve(data)
+            }).catch(e => reject(e))
+        })
+    },
+    POST_API (context, url, options) {
+        return new Promise((resolve, reject) => {
+            this.$axios.post(url, options).then(({ data }) => {
+                resolve(data)
+            }).catch(e => reject(e))
+        })
+    },
+    DELETE_API (context, url, options) {
+        return new Promise((resolve, reject) => {
+            this.$axios.delete(url, options).then(({ data }) => {
+                resolve(data)
+            }).catch(e => reject(e))
+        })
     }
 }

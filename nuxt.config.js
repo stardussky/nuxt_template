@@ -4,9 +4,11 @@ export default {
     target: 'server',
     head: {
         title: process.env.npm_package_name || '',
+        titleTemplate: '%s | Nuxt',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { hid: 'og:title', property: 'og:title', content: process.env.npm_package_name || '' },
             { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
         ],
         link: [

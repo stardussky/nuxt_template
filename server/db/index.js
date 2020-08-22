@@ -5,7 +5,10 @@ const db = low(adapter)
 
 db.defaults({
     name: 'BlockStudio',
-    user: []
+    user: {
+        increment: '0',
+        list: []
+    }
 }).write()
 
 module.exports = db

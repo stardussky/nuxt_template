@@ -2,9 +2,11 @@
     <div class="container">
         <div>
             <Logo />
-            <h1 class="title">
-                This is About Page
-            </h1>
+            <client-only>
+                <h1 class="title">
+                    This is About Page
+                </h1>
+            </client-only>
             <div class="links">
                 <nuxt-link to="/" class="button--green">
                     Home
@@ -20,6 +22,7 @@
 <script>
 export default {
     name: 'About',
+    layout: 'black',
     middleware: 'routerMiddleware',
     fetch () {
         console.log('fetch hook')
@@ -35,39 +38,14 @@ export default {
     },
     mounted () {
         console.log('mounted hook')
+    },
+    head () {
+        return {
+            title: 'About',
+            meta: [
+                { hid: 'og:title', property: 'og:title', content: 'About' }
+            ]
+        }
     }
 }
 </script>
-
-<style>
-.container {
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.title {
-    font-family:
-        'Quicksand',
-        'Source Sans Pro',
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        Roboto,
-        'Helvetica Neue',
-        Arial,
-        sans-serif;
-    display: block;
-    font-weight: 300;
-    font-size: 100px;
-    color: #35495e;
-    letter-spacing: 1px;
-}
-
-.links {
-    padding-top: 15px;
-}
-</style>

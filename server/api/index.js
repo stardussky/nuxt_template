@@ -6,7 +6,7 @@ const user = require('./user/index')
 app.get('/', (req, res) => {
     res.send(db.get('name'))
 })
-app.use('user', user)
+app.use('/user', user)
 
 module.exports = {
     path: '/api',
