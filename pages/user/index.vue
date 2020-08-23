@@ -13,23 +13,35 @@
                     About
                 </nuxt-link>
             </div>
-            <div class="user-list">
-                <nuxt-link
-                    v-for="user in list"
-                    :key="user.id"
-                    :to="{name: 'user-user', params: {user: user.id}}"
-                    class="button--grey"
-                >
-                    User{{ user.id }}
-                </nuxt-link>
-            </div>
-            <div>
-                <button class="button--grey" @click="addAccount">
-                    Add Account
-                </button>
-            </div>
+            <p v-if="$fetchState.pending">
+                Fetching posts...
+            </p>
+            <p v-else-if="$fetchState.error">
+                Error while fetching posts: {{ $fetchState.error.message }}
+            </p>
+            <template v-else>
+                <div class="user-list">
+                    <nuxt-link
+                        v-for="user in list"
+                        :key="user.id"
+                        :to="{name: 'user-user', params: {user: user.id}}"
+                        class="button--grey"
+                    >
+                        User{{ user.id }}
+                    </nuxt-link>
+                </div>
+                <div>
+                    <button class="button--grey" @click="addAccount">
+                        Add Account
+                    </button>
+                </div>
+            </template>
+            <button class="button--red" @click="$fetch">
+                Refrash
+            </button>
         </div>
     </div>
+    </divclass="container">
 </template>
 
 <script>
@@ -37,7 +49,8 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
     name: 'User',
-    async fetch ({ store, error }) {
+    async fetch () {
+        const { store, error } = this.$nuxt.context
         if (!store.state.user.list.length) {
             try {
                 const data = await store.dispatch('GET_API', '/api/user')
@@ -47,8 +60,16 @@ export default {
             }
         }
     },
+    fetchOnServer: true,
     computed: {
         ...mapState('user', ['list'])
+    },
+    activated () {
+        // keep alive hook
+        // Call fetch again if last fetch more than 30 sec ago
+        if (this.$fetchState.timestamp <= Date.now() - 30000) {
+            this.$fetch()
+        }
     },
     methods: {
         ...mapMutations('user', ['SET_LIST']),
@@ -80,7 +101,12 @@ export default {
     margin-bottom: 15px;
 }
 
-.button--grey {
+.button--grey,
+.button--red {
     margin: 0;
+}
+
+.button--red {
+    margin-top: 15px;
 }
 </style>

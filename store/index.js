@@ -14,6 +14,7 @@ export const mutations = {
 
 export const actions = {
     async nuxtServerInit ({ commit, dispatch }, { error }) {
+        console.log('nuxtServerInit')
         try {
             const data = await dispatch('GET_API', '/api')
             commit('SET_SITE_NAME', data)

@@ -18,7 +18,12 @@ export default {
     css: [
         '@/style/main.css'
     ],
+    loading: {
+        color: 'blue',
+        height: '5px'
+    },
     plugins: [
+        { src: '@/plugins/myPlugin', mode: 'client' }
     ],
     components: true,
     buildModules: [

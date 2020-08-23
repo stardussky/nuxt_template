@@ -15,6 +15,9 @@
                     User
                 </nuxt-link>
             </div>
+            <button class="button--red" @click="$sayName('Foo')">
+                MyPlugin
+            </button>
         </div>
     </div>
 </template>
@@ -24,6 +27,10 @@ export default {
     name: 'About',
     layout: 'black',
     middleware: 'routerMiddleware',
+    validate () {
+        console.log('validate')
+        return true
+    },
     fetch () {
         console.log('fetch hook')
     },
@@ -32,6 +39,9 @@ export default {
         return {
 
         }
+    },
+    beforeCreate () {
+        console.log('beforeCreate hook')
     },
     created () {
         console.log('created hook')
