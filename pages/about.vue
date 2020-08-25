@@ -48,6 +48,12 @@ export default {
     },
     mounted () {
         console.log('mounted hook')
+        this.$nextTick(() => {
+            this.$nuxt.$loading.start()
+            setTimeout(() => {
+                this.$nuxt.$loading.finish()
+            }, 1000)
+        })
     },
     head () {
         return {

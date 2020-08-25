@@ -18,10 +18,11 @@ export default {
     css: [
         '@/style/main.css'
     ],
-    loading: {
-        color: 'blue',
-        height: '5px'
-    },
+    // loading: {
+    //     color: 'red',
+    //     height: '1px'
+    // },
+    loading: '@/components/loading',
     plugins: [
         { src: '@/plugins/myPlugin', mode: 'client' }
     ],
@@ -35,6 +36,7 @@ export default {
     ],
     axios: {},
     serverMiddleware: [
+        { path: '/example', handler: '@/server/example' },
         '@/server/api/index'
     ],
     build: {

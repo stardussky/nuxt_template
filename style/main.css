@@ -1,5 +1,5 @@
 .page-enter,
-.page-leave {
+.page-leave-to {
     opacity: 0;
 }
 
@@ -9,7 +9,7 @@
 }
 
 .layout-enter,
-.layout-leave {
+.layout-leave-to {
     opacity: 0;
 }
 

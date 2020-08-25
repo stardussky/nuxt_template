@@ -41,7 +41,6 @@
             </button>
         </div>
     </div>
-    </divclass="container">
 </template>
 
 <script>

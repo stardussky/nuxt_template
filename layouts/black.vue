@@ -4,6 +4,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'LayoutBlack'
+}
+</script>
+
 <style>
     .black-layout {
         background-color: #000;

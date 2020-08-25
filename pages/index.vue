@@ -9,6 +9,9 @@
                 <nuxt-link to="/about" class="button--green">
                     About
                 </nuxt-link>
+                <!-- <router-link to="/about" class="button--green">
+                    About
+                </router-link> -->
                 <nuxt-link to="/user" class="button--grey">
                     User
                 </nuxt-link>

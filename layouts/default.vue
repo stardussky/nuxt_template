@@ -4,6 +4,12 @@
     </div>
 </template>
 
+<script>
+export default {
+    name: 'LayoutDefault'
+}
+</script>
+
 <style>
     .default-layout .title {
         font-family:
