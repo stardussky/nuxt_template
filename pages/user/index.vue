@@ -52,7 +52,7 @@ export default {
         const { store, error } = this.$nuxt.context
         if (!store.state.user.list.length) {
             try {
-                const data = await store.dispatch('GET_API', '/api/user')
+                const data = await store.dispatch('GET_API', { url: '/api/user' })
                 store.commit('user/SET_LIST', data)
             } catch (e) {
                 error(e)
@@ -76,7 +76,7 @@ export default {
         async addAccount () {
             const name = prompt('Enter your name.')
             if (name) {
-                const result = await this.POST_API(`/api/user/${name}`)
+                const result = await this.POST_API({ url: `/api/user/${name}` })
                 if (result) {
                     this.SET_LIST(result)
                 }

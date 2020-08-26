@@ -2,7 +2,7 @@ export default async function ({ store, route, error }) {
     store.commit('user/SET_ID', route.params.user)
     if (!store.state.user.list.length) {
         try {
-            const data = await store.dispatch('GET_API', '/api/user')
+            const data = await store.dispatch('GET_API', { url: '/api/user' })
             store.commit('user/SET_LIST', data)
         } catch (e) {
             error(e)

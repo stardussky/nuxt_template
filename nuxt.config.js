@@ -18,11 +18,11 @@ export default {
     css: [
         '@/style/main.css'
     ],
-    // loading: {
-    //     color: 'red',
-    //     height: '1px'
-    // },
-    loading: '@/components/loading',
+    loading: {
+        color: 'red',
+        height: '3px'
+    },
+    // loading: '@/components/loading',
     plugins: [
         { src: '@/plugins/myPlugin', mode: 'client' }
     ],

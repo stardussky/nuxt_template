@@ -30,7 +30,7 @@ export default {
         ...mapMutations('user', ['DELETE_USER']),
         async deleteAccount () {
             if (confirm('Are you sure you want to DELETE account ?')) {
-                const result = await this.DELETE_API(`/api/user/${this.userInfo.id}`)
+                const result = await this.DELETE_API({ url: `/api/user/${this.userInfo.id}` })
                 if (result && !result.status) {
                     this.$router.replace('/user')
                     this.DELETE_USER(result[0].id)
