@@ -1,76 +1,76 @@
 :root {
-  --vh: 1vh;
+    --vh: 1vh;
 }
 
 body,
 button,
 input,
 textarea {
-  font-family: map-get($font-family, default);
+    font-family: map-get($font-family, default);
 }
 
 html,
 body {
-  @include typo("body", 1);
+    @include typo("body", 1);
 
-  font-family: map-get($font-family, default);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overscroll-behavior: none;
+    font-family: map-get($font-family, default);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
 }
 
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 input,
 textarea {
-  @include typo("body", 1);
+    @include typo("body", 1);
 
-  border: none;
-  appearance: none;
+    border: none;
+    appearance: none;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 
-  &:hover,
-  &:active,
-  &:focus {
-    outline: 0;
-  }
+    &:hover,
+    &:active,
+    &:focus {
+        outline: 0;
+    }
 }
 
 button {
-  @include typo("button", 1);
+    @include typo("button", 1);
 
-  background-color: transparent;
+    background-color: transparent;
 }
 
 .container {
-  @include make-container();
+    @include make-container();
 }
 
 .row {
-  @include make-row();
+    @include make-row();
 
-  &.-block {
-    display: block;
-  }
+    &.-block {
+        display: block;
+    }
 
-  &.-no-gutters {
-    margin-right: 0;
-    margin-left: 0;
-  }
+    &.-no-gutters {
+        margin-right: 0;
+        margin-left: 0;
+    }
 }
 
 .sprite-icons {
-  @include size(1em);
+    @include size(1em);
 
-  fill: currentColor;
+    fill: currentColor;
 }

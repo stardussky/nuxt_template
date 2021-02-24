@@ -1,3 +1,5 @@
+import Webpack from 'webpack'
+
 export default {
     target: 'server',
     publicRuntimeConfig: {
@@ -34,7 +36,10 @@ export default {
             '@/style/mixins/_mixin.scss' // mixin or function only !!!
         ]
     },
-    loading: '@/components/Loading',
+    loading: {
+        color: '#108774',
+        height: '3px'
+    },
     plugins: [
         { src: '@/plugins/directives/index', mode: 'client' },
         { src: '@/plugins/prototype/index', mode: 'client' },
@@ -72,5 +77,12 @@ export default {
         routesNameSeparator: '_',
         seo: false
     },
-    build: {}
+    build: {
+        plugins: [
+            new Webpack.ProvidePlugin({})
+        ],
+        extend (config, { isDev, isClient, isServer }) {
+            // webpack loader
+        }
+    }
 }

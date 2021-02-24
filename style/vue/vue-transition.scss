@@ -1,3 +1,43 @@
+.page {
+    &-enter {
+        opacity: 1;
+
+        &-active {
+            transition: opacity 0.5s;
+        }
+    }
+
+    &-leave {
+        &-to {
+            opacity: 0;
+        }
+
+        &-active {
+            transition: opacity 0.5s;
+        }
+    }
+}
+
+.layout {
+    &-enter {
+        opacity: 1;
+
+        &-active {
+            transition: opacity 0.5s;
+        }
+    }
+
+    &-leave {
+        &-to {
+            opacity: 0;
+        }
+
+        &-active {
+            transition: opacity 0.5s;
+        }
+    }
+}
+
 .fade {
     &-enter {
         opacity: 1;

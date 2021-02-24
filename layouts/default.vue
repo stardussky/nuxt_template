@@ -1,12 +1,13 @@
 <template>
     <div :style="globalStyle">
         <Nuxt />
+        <LoadingDefault />
     </div>
 </template>
 
 <script>
 import { debounce } from 'lodash'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
     name: 'DefaultLayout',
@@ -24,12 +25,17 @@ export default {
     mounted () {
         this.resize()
         window.addEventListener('resize', this.resize)
+
+        this.START_LOADING((done) => {
+            done(-2)
+        })
     },
     beforeDestroy () {
         window.removeEventListener('resize', this.resize)
     },
     methods: {
         ...mapMutations(['SET_DEVICE_INFO', 'SET_VIEWPORT']),
+        ...mapActions(['START_LOADING']),
         resize: debounce(function () {
             this.SET_VIEWPORT({ width: window.innerWidth, height: this.$innerHeight() })
             this.SET_DEVICE_INFO(this.$detectDevice())
