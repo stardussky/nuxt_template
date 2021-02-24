@@ -1,31 +1,99 @@
 <template>
-    <div class="container">
+    <div class="page-index container">
         <div>
             <Logo />
             <h1 class="title">
-                {{ siteName }}
+                Nuxt - {{ $t($route.name).lang }}
             </h1>
             <div class="links">
-                <nuxt-link to="/about" class="button--green">
-                    About
+                <a
+                    href="https://nuxtjs.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="button--green"
+                >
+                    {{ $t($route.name).doc }}
+                </a>
+                <a
+                    href="https://github.com/nuxt/nuxt.js"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="button--grey"
+                >
+                    GitHub
+                </a>
+                <nuxt-link class="button--grey" :to="localePath('/about', $i18n.locale)">
+                    {{ $t($route.name).about }}
                 </nuxt-link>
-                <!-- <router-link to="/about" class="button--green">
-                    About
-                </router-link> -->
-                <nuxt-link to="/user" class="button--grey">
-                    User
-                </nuxt-link>
+            </div>
+            <div class="lang">
+                <button class="button--grey" @click="$getLang($route.name, 'zh-TW')">
+                    zh-TW
+                </button>
+                <button class="button--grey" @click="$getLang($route.name, 'en')">
+                    EN
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
-    name: 'Home',
-    computed: {
-        ...mapState(['siteName'])
+    name: 'Index',
+    head () {
+        const i18nSeo = this.$nuxtI18nSeo()
+        return {
+            title: 'Home',
+            ...i18nSeo
+        }
     }
 }
 </script>
+
+<style lang='scss'>
+
+.page-index {
+    &.container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+    }
+
+    .title {
+        display: block;
+        font-size: 100px;
+        font-family:
+            'Quicksand',
+            'Source Sans Pro',
+            -apple-system,
+            BlinkMacSystemFont,
+            'Segoe UI',
+            Roboto,
+            'Helvetica Neue',
+            Arial,
+            sans-serif;
+        font-weight: 300;
+        color: #35495e;
+        letter-spacing: 1px;
+    }
+
+    .subtitle {
+        padding-bottom: 15px;
+        font-size: 42px;
+        font-weight: 300;
+        color: #526488;
+        word-spacing: 5px;
+    }
+
+    .links {
+        padding-top: 15px;
+    }
+
+    .lang {
+        margin-top: 30px;
+    }
+}
+</style>

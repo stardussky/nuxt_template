@@ -1,16 +1,6 @@
 <template>
-    <div class="container">
-        <div>
-            <Logo />
-            <h1 class="title">
-                {{ error.statusCode }} {{ error.message }}
-            </h1>
-            <div class="links">
-                <nuxt-link to="/" class="button--green">
-                    Back
-                </nuxt-link>
-            </div>
-        </div>
+    <div class="page-error">
+        {{ error.statusCode + ' ' + error.message }}
     </div>
 </template>
 

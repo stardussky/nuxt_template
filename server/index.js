@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
-const db = require('../db/index')
-const user = require('./user/index')
+const lang = require('./lang')
 
 app.get('/', (req, res) => {
-    res.send(db.get('name'))
+    res.send('api success')
 })
-app.use('/user', user)
+
+app.use('/lang', lang)
 
 module.exports = {
     path: '/api',

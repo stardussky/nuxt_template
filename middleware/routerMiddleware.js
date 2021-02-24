@@ -1,4 +1,3 @@
-export default function (context) {
-    // console.log(context)
-    console.log('middleware')
+export default async function ({ app, route, ...context }) {
+    await app.$getLang(route.name)
 }

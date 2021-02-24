@@ -7,12 +7,8 @@ module.exports = {
     parserOptions: {
         parser: 'babel-eslint'
     },
-    extends: [
-        '@nuxtjs',
-        'plugin:nuxt/recommended'
-    ],
-    plugins: [
-    ],
+    extends: ['@nuxtjs', 'plugin:nuxt/recommended', 'standard'],
+    plugins: [],
     // add your custom rules here
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',

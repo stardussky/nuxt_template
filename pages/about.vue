@@ -1,67 +1,56 @@
 <template>
-    <div class="container">
+    <div class="page-about">
         <div>
-            <Logo />
-            <client-only>
-                <h1 class="title">
-                    This is About Page
-                </h1>
-            </client-only>
-            <div class="links">
-                <nuxt-link to="/" class="button--green">
-                    Home
-                </nuxt-link>
-                <nuxt-link to="/user" class="button--grey">
-                    User
-                </nuxt-link>
-            </div>
-            <button class="button--red" @click="$sayName('Foo')">
-                MyPlugin
-            </button>
+            <p class="page-about__title">
+                {{ $t($route.name).greet }}
+            </p>
+            <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
+                Back
+            </nuxt-link>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
     name: 'About',
-    layout: 'black',
-    middleware: 'routerMiddleware',
-    validate () {
-        console.log('validate')
-        return true
-    },
-    fetch () {
-        console.log('fetch hook')
-    },
-    asyncData () {
-        console.log('asyncData hook')
-        return {
-
-        }
-    },
-    beforeCreate () {
-        console.log('beforeCreate hook')
-    },
-    created () {
-        console.log('created hook')
-    },
-    mounted () {
-        console.log('mounted hook')
-        // this.$nextTick(() => {
-        //     this.$nuxt.$loading.start()
-        //     setTimeout(() => {
-        //         this.$nuxt.$loading.finish()
-        //     }, 1000)
-        // })
+    async fetch () {
+        const data = await this.AJAX({ url: '/api' })
+        console.log(data)
     },
     head () {
+        const i18nSeo = this.$nuxtI18nSeo()
         return {
             title: 'About',
-            meta: [
-                { hid: 'og:title', property: 'og:title', content: 'About' }
-            ]
+            ...i18nSeo
         }
+    },
+    methods: {
+        ...mapActions(['AJAX'])
     }
 }
 </script>
+
+<style lang="scss">
+
+.page-about {
+    display: grid;
+    width: 100%;
+    height: 100vh;
+    place-items: center;
+
+    >div {
+        text-align: center;
+    }
+
+    &__title {
+        @include typo('display', 1);
+
+        display: block;
+        text-align: center;
+        color: #35495e;
+    }
+}
+</style>

@@ -1,46 +1,51 @@
 export const state = () => ({
-    siteName: null
+    deviceInfo: null,
+    viewPort: {
+        width: 0,
+        height: 0,
+        media: {
+            mobile: '(max-width: 767px)',
+            tablet: '(max-width: 1199px) and (min-width: 768px)',
+            desktop: '(min-width:1200px)'
+        }
+    }
 })
 
 export const getters = {
-
+    deviceMedia (state) {
+        if (process.browser) {
+            for (const key in state.viewPort.media) {
+                if (window.matchMedia(state.viewPort.media[key]).matches) {
+                    return key
+                }
+            }
+        }
+        return null
+    }
 }
 
 export const mutations = {
-    SET_SITE_NAME (state, payload) {
-        state.siteName = payload
+    SET_DEVICE_INFO (state, payload) {
+        state.deviceInfo = payload
+    },
+    SET_VIEWPORT (state, { width, height }) {
+        state.viewPort = { ...state.viewPort, width, height }
     }
 }
 
 export const actions = {
-    async nuxtServerInit ({ commit, dispatch }, { error }) {
-        console.log('nuxtServerInit')
-        try {
-            const data = await dispatch('GET_API', { url: '/api' })
-            commit('SET_SITE_NAME', data)
-        } catch (e) {
-            error(e)
-        }
+    async nuxtServerInit () {
+
     },
-    GET_API (context, { url, options }) {
+    AJAX (context, options) {
         return new Promise((resolve, reject) => {
-            this.$axios.get(url, options).then(({ data }) => {
+            this.$axios({
+                ...options
+            }).then(({ data, ...res }) => {
                 resolve(data)
-            }).catch(e => reject(e))
-        })
-    },
-    POST_API (context, { url, options }) {
-        return new Promise((resolve, reject) => {
-            this.$axios.post(url, options).then(({ data }) => {
-                resolve(data)
-            }).catch(e => reject(e))
-        })
-    },
-    DELETE_API (context, { url, options }) {
-        return new Promise((resolve, reject) => {
-            this.$axios.delete(url, options).then(({ data }) => {
-                resolve(data)
-            }).catch(e => reject(e))
+            }).catch((e) => {
+                reject(e)
+            })
         })
     }
 }
