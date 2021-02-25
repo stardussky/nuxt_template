@@ -3,7 +3,7 @@
         <div>
             <Logo />
             <h1 class="title">
-                {{ $t($route.name).message }}
+                {{ $t($getLanguageKey($route)).message }}
             </h1>
             <div class="links">
                 <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">

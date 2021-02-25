@@ -29,13 +29,13 @@ router.get('/about_en', (req, res) => {
     })
 })
 
-router.get('/all_zh-TW', (req, res) => {
+router.get('/all_zh-TW/:pathMatch', (req, res) => {
     res.json({
         message: '找不到路徑'
     })
 })
 
-router.get('/all_en', (req, res) => {
+router.get('/all_en/:pathMatch', (req, res) => {
     res.json({
         message: 'Router Not Found'
     })

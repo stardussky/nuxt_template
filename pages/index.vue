@@ -3,7 +3,7 @@
         <div>
             <Logo />
             <h1 class="title">
-                Nuxt - {{ $t($route.name).lang }}
+                Nuxt - {{ $t($getLanguageKey($route)).lang }}
             </h1>
             <div class="links">
                 <a
@@ -12,7 +12,7 @@
                     rel="noopener noreferrer"
                     class="button--green"
                 >
-                    {{ $t($route.name).doc }}
+                    {{ $t($getLanguageKey($route)).doc }}
                 </a>
                 <a
                     href="https://github.com/nuxt/nuxt.js"
@@ -23,14 +23,14 @@
                     GitHub
                 </a>
                 <nuxt-link class="button--grey" :to="localePath('/about', $i18n.locale)">
-                    {{ $t($route.name).about }}
+                    {{ $t($getLanguageKey($route)).about }}
                 </nuxt-link>
             </div>
             <div class="lang">
-                <button class="button--grey" @click="$getLang($route.name, 'zh-TW')">
+                <button class="button--grey" @click="$getLanguage($route, 'zh-TW')">
                     zh-TW
                 </button>
-                <button class="button--grey" @click="$getLang($route.name, 'en')">
+                <button class="button--grey" @click="$getLanguage($route, 'en')">
                     EN
                 </button>
             </div>

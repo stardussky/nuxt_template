@@ -2,7 +2,7 @@
     <div class="page-about">
         <div>
             <p class="page-about__title">
-                {{ $t($route.name).greet }}
+                {{ $t($getLanguageKey($route)).greet }}
             </p>
             <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
                 Back

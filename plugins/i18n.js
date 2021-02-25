@@ -1,17 +1,38 @@
+
 export default ({ app, store, route }, inject) => {
-    const getLang = async (routeName, lang) => {
-        const LANG = lang || app.i18n.locale || 'zh-TW'
-        const PATH = routeName || route.name
-        if (!app.i18n.getLocaleMessage(LANG)[PATH]) {
+    const getLanguageKey = (route) => {
+        const { name, params: _params } = route
+        const [params] = Object.values(_params)
+        let key = name
+        if (params) key += `_${params}`
+        return key
+    }
+    const getLanguage = async (route, language) => {
+        const locale = language || app.i18n.locale
+        const [params] = Object.values(route.params)
+        const key = getLanguageKey(route)
+
+        const temp = store.state.language.lang[key]
+        if (!temp) {
             try {
-                const langMessage = await store.dispatch('AJAX', { url: `/api/lang/${PATH}` })
-                app.i18n.mergeLocaleMessage(LANG, { [PATH]: langMessage })
+                let url = `/api/lang/${route.name}`
+                if (params) url += `/${params}`
+
+                const langMessage = await store.dispatch('AJAX', { url })
+                app.i18n.mergeLocaleMessage(locale, { [key]: langMessage })
+                store.commit('language/SET_LANG', { name: key, data: langMessage })
             } catch (e) {
                 console.error(`${e.name}: ${e.message} (Lang Not Found)`)
             }
+            return
         }
-        lang && app.i18n.setLocale(LANG)
+        app.i18n.mergeLocaleMessage(locale, { [key]: temp })
+
+        language && app.i18n.setLocale(locale)
     }
-    inject('getLang', getLang)
-    return getLang()
+
+    inject('getLanguageKey', getLanguageKey)
+    inject('getLanguage', getLanguage)
+
+    return getLanguage(route)
 }
