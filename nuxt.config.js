@@ -13,6 +13,9 @@ export default {
         middleware: 'routerMiddleware'
     },
     serverMiddleware: ['@/server/index'],
+    server: {
+        host: '0.0.0.0'
+    },
     head: {
         title: process.env.APP_TITLE,
         titleTemplate: `%s | ${process.env.APP_TITLE_TEMPLATE}`,

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import ImagesLoaded from 'imagesloaded'
 import { debounce } from 'lodash'
 import { mapMutations, mapActions } from 'vuex'
 
@@ -27,7 +28,10 @@ export default {
         window.addEventListener('resize', this.resize)
 
         this.START_LOADING((done) => {
-            done(-2)
+            /* eslint-disable no-unused-vars */
+            const loader = new ImagesLoaded('#__nuxt', { background: '[data-background]' }, (instance) => {
+                done(-2)
+            })
         })
     },
     beforeDestroy () {
