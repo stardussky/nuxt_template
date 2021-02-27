@@ -6,27 +6,25 @@
 </template>
 
 <script>
+import { viewport } from '@/plugins/viewport/index'
 import ImagesLoaded from 'imagesloaded'
-import { debounce } from 'lodash'
-import { mapMutations, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'DefaultLayout',
     computed: {
+        ...viewport.vpHeight,
         globalStyle () {
             const style = {
                 '--vh': '1vh'
             }
             if (process.browser) {
-                style['--vh'] = `${window.innerHeight / this.$innerHeight()}vh`
+                style['--vh'] = `${window.innerHeight / this.vpHeight}vh`
             }
             return style
         }
     },
     mounted () {
-        this.resize()
-        window.addEventListener('resize', this.resize)
-
         this.START_LOADING((done) => {
             /* eslint-disable no-unused-vars */
             const loader = new ImagesLoaded('#__nuxt', { background: '[data-background]' }, (instance) => {
@@ -35,15 +33,10 @@ export default {
         })
     },
     beforeDestroy () {
-        window.removeEventListener('resize', this.resize)
+        this.$viewport.destroy()
     },
     methods: {
-        ...mapMutations(['SET_DEVICE_INFO', 'SET_VIEWPORT']),
-        ...mapActions(['START_LOADING']),
-        resize: debounce(function () {
-            this.SET_VIEWPORT({ width: window.innerWidth, height: this.$innerHeight() })
-            this.SET_DEVICE_INFO(this.$detectDevice())
-        }, 200)
+        ...mapActions(['START_LOADING'])
     }
 }
 </script>

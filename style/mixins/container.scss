@@ -1,75 +1,44 @@
-@function breakpoint-min($name, $breakpoints: $container) {
-    $min: map-get(map-get($breakpoints, $name), media);
-    @return if($min !=0, $min, null);
-}
-
-@mixin media-breakpoint-up($name, $breakpoints: $container) {
-    $min: breakpoint-min($name, $breakpoints);
-
-    @if $min {
-        @media (min-width: $min) {
-            @content;
-        }
-    }
-
-    @else {
-        @content;
-    }
-}
-
-@mixin make-container($padding: $container) {
-    position: relative;
+@mixin make-container() {
     margin-right: auto;
     margin-left: auto;
     width: 100%;
+}
 
-    @each $breakpoint in map-keys($padding) {
-        @include media-breakpoint-up($breakpoint) {
-            $padding: map-get(map-get($container, $breakpoint), padding);
-            $gutter: map-get(map-get($container, $breakpoint), gutter);
+@mixin get-container {
+    .container,
+    .container-fluid {
+        @include make-container();
+    }
 
-            padding-right: $padding;
-            padding-left: $padding;
-            max-width: map-get(map-get($container, $breakpoint), width);
+    @each $breakpoint, $container-max-width in $container-max-widths {
+        .container-#{$breakpoint} {
+            @extend .container-fluid;
+        }
 
-            &.-grid {
-                padding-right: $gutter+$padding;
-                padding-left: $gutter+$padding;
+        @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+            %responsive-container-#{$breakpoint} {
+                max-width: $container-max-width;
+
+                $gutter: map-get($container-padding, $breakpoint);
+                @if ($gutter) {
+                    padding-right: $gutter;
+                    padding-left: $gutter;
+                }
+            }
+
+            $extend-breakpoint: true;
+
+            @each $name, $width in $grid-breakpoints {
+                @if ($extend-breakpoint) {
+                    .container#{breakpoint-infix($name, $grid-breakpoints)} {
+                        @extend %responsive-container-#{$breakpoint};
+                    }
+
+                    @if ($breakpoint == $name) {
+                        $extend-breakpoint: false;
+                    }
+                }
             }
         }
     }
-}
-
-@mixin make-row($padding: $container) {
-    display: flex;
-    flex-wrap: wrap;
-
-    @each $breakpoint in map-keys($padding) {
-        @include media-breakpoint-up($breakpoint) {
-            $gutter: map-get(map-get($container, $breakpoint), gutter);
-
-            margin-right: -$gutter;
-            margin-left: -$gutter;
-        }
-    }
-}
-
-@mixin col-padding($padding: $container) {
-    @each $breakpoint in map-keys($padding) {
-        @include media-breakpoint-up($breakpoint) {
-            $gutter: map-get(map-get($container, $breakpoint), gutter);
-
-            padding-right: $gutter;
-            padding-left: $gutter;
-        }
-    }
-}
-
-@mixin col-width($percent) {
-    width: $percent;
-    max-width: $percent;
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 $percent;
-    -ms-flex: 0 0 $percent;
-    flex: 0 0 $percent;
 }

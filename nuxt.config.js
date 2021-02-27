@@ -46,6 +46,7 @@ export default {
     plugins: [
         { src: '@/plugins/directives/index', mode: 'client' },
         { src: '@/plugins/prototype/index', mode: 'client' },
+        { src: '@/plugins/viewport/index' },
         { src: '@/plugins/svgSupportIE', mode: 'client' },
         { src: '@/plugins/i18n' }
     ],

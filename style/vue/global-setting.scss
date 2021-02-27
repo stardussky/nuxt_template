@@ -2,6 +2,9 @@
     --vh: 1vh;
 }
 
+@include get-container();
+@include grid-system();
+
 body,
 button,
 input,
@@ -17,6 +20,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
+    touch-action: none;
+    background-color: map-get($colors, default);
 }
 
 *,
@@ -50,23 +55,6 @@ button {
     @include typo("button", 1);
 
     background-color: transparent;
-}
-
-.container {
-    @include make-container();
-}
-
-.row {
-    @include make-row();
-
-    &.-block {
-        display: block;
-    }
-
-    &.-no-gutters {
-        margin-right: 0;
-        margin-left: 0;
-    }
 }
 
 .sprite-icons {

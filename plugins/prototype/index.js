@@ -1,7 +1,5 @@
-import detectDevice from './detectDevice'
-import mobileInnerHeight from './mobileInnerHeight'
+import registerStore from './registerStore'
 
-export default (context, inject) => {
-    inject('detectDevice', detectDevice)
-    inject('innerHeight', mobileInnerHeight)
+export default ({ store }, inject) => {
+    inject('registerStore', registerStore)
 }
