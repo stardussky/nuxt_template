@@ -8,12 +8,17 @@ const getterKeys = ['vpWidth', 'vpHeight', 'device', 'mediaType', 'isDesktop', '
 
 const storeModule = {
     namespaced: true,
-    state: () => ({
-        information: null
-    }),
+    state: () => getterKeys.reduce((acc, curr) => {
+        acc[curr] = null
+        return acc
+    }, {}),
     mutations: {
         SET_INFORMATION (state, payload) {
-            state.information = payload
+            for (const [key, value] of Object.entries(payload)) {
+                if (state[key] !== undefined) {
+                    state[key] = value
+                }
+            }
         }
     }
 }
@@ -50,6 +55,8 @@ class Viewport {
         this.device = detectDevice()
 
         this.store.commit(`${moduleName}/SET_INFORMATION`, this.info)
+
+        this.onResize?.()
     }, 200)
 
     destroy () {
@@ -131,7 +138,7 @@ class Viewport {
 }
 
 export const viewport = getterKeys.reduce((acc, curr) => {
-    acc[curr] = mapState(moduleName, { [curr]: state => state.information && state.information[curr] })
+    acc[curr] = mapState(moduleName, { [curr]: state => state[curr] })
     return acc
 }, {})
 
