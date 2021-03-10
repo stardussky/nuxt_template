@@ -2,7 +2,7 @@
     <div class="page-about">
         <div>
             <p class="page-about__title">
-                {{ $t($getLanguageKey($route)).greet }}
+                {{ localeData.greet }}
             </p>
             <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
                 Back
@@ -21,10 +21,23 @@ export default {
         console.log(data)
     },
     head () {
-        const i18nSeo = this.$nuxtI18nSeo()
+        const i18nSeo = this.$nuxtI18nSeo({ addSeoAttributes: true })
         return {
             title: 'About',
-            ...i18nSeo
+            htmlAttrs: {
+                ...i18nSeo.htmlAttrs
+            },
+            meta: [
+                ...i18nSeo.meta
+            ],
+            link: [
+                ...i18nSeo.link
+            ]
+        }
+    },
+    computed: {
+        localeData () {
+            return this.$t(this.$getLanguageKey(this.$route))
         }
     },
     methods: {

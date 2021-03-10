@@ -1,12 +1,16 @@
 import Webpack from 'webpack'
+// import path from 'path'
+// import fs from 'fs'
 
 export default {
     target: 'server',
     publicRuntimeConfig: {
         APP_TITLE: '',
         APP_TITLE_TEMPLATE: '',
+        APP_DESC: '',
         APP_URL: '',
-        APP_API: ''
+        APP_API: '',
+        APP_BACKEND_API: ''
     },
     privateRuntimeConfig: {},
     router: {
@@ -15,19 +19,45 @@ export default {
     serverMiddleware: ['@/server/index'],
     server: {
         host: '0.0.0.0'
+        // https: {
+        //     key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+        //     cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem'))
+        // }
     },
     head: {
         title: process.env.APP_TITLE,
         titleTemplate: `%s | ${process.env.APP_TITLE_TEMPLATE}`,
         htmlAttrs: {
-            lang: 'zh-TW'
+            lang: 'zh'
         },
         meta: [
             { name: 'googlebot', content: 'noindex' }, // TODO: 正式上線後刪除
             { name: 'robots', content: 'noindex' }, // TODO: 正式上線後刪除
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-            { hid: 'description', name: 'description', content: '' }
+            { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
+            { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+            { 'http-equiv': 'x-dns-prefetch-control', content: 'on' },
+            { name: 'format-detection', content: 'telephone=no' },
+            { name: 'apple-mobile-web-app-capable', content: 'yes' },
+            { hid: 'description', name: 'description', content: process.env.APP_DESC },
+            { property: 'og:locale', content: 'en' },
+            { property: 'og:type', content: 'website' },
+            { hid: 'og:title', property: 'og:title', content: process.env.APP_TITLE },
+            { hid: 'og:description', property: 'og:description', content: process.env.APP_DESC },
+            { hid: 'og:url', property: 'og:url', content: process.env.APP_URL },
+            { hid: 'og:site_name', property: 'og:site_name', content: process.env.APP_TITLE },
+            { property: 'og:image:width', content: '1200' },
+            { property: 'og:image:height', content: '630' },
+            { property: 'og:image', content: `${process.env.APP_URL}/og_img.jpg` },
+            { property: 'og:image:alt', content: process.env.APP_DESC },
+            { name: 'twitter:card', content: 'summary_large_image' },
+            { hid: 'twitter:description', name: 'twitter:description', content: process.env.APP_DESC },
+            { hid: 'twitter:title', name: 'twitter:title', content: process.env.APP_TITLE },
+            { name: 'twitter:image', content: `${process.env.APP_URL}/og_img.jpg` },
+            { hid: 'name', itemprop: 'name', content: process.env.APP_TITLE },
+            { itemprop: 'description', content: process.env.APP_DESC },
+            { itemprop: 'image', content: `${process.env.APP_URL}/og_img.jpg` }
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
     },
@@ -62,22 +92,29 @@ export default {
         'nuxt-rfg-icon',
         'nuxt-i18n'
     ],
-    axios: {},
+    axios: {
+        browserBaseURL: process.env.APP_API
+    },
     svgSprite: {
         input: '~/assets/icons'
     },
     i18n: {
+        baseUrl: process.env.APP_URL,
         locales: [
             {
-                code: 'zh-TW',
-                iso: 'zh-TW'
+                code: 'zh',
+                iso: 'zh_TW'
             },
             {
                 code: 'en',
                 iso: 'en-US'
             }
         ],
-        defaultLocale: 'zh-TW',
+        defaultLocale: 'zh',
+        detectBrowserLanguage: {
+            fallbackLocale: 'zh',
+            onlyOnRoot: true
+        },
         routesNameSeparator: '_',
         seo: false
     },

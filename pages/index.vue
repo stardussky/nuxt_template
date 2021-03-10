@@ -3,7 +3,7 @@
         <div>
             <Logo />
             <h1 class="title">
-                Nuxt - {{ $t($getLanguageKey($route)).lang }}
+                Nuxt - {{ localeData.lang }}
             </h1>
             <div class="links">
                 <a
@@ -12,7 +12,7 @@
                     rel="noopener noreferrer"
                     class="button--green"
                 >
-                    {{ $t($getLanguageKey($route)).doc }}
+                    {{ localeData.doc }}
                 </a>
                 <a
                     href="https://github.com/nuxt/nuxt.js"
@@ -23,14 +23,14 @@
                     GitHub
                 </a>
                 <nuxt-link class="button--grey" :to="localePath('/about', $i18n.locale)">
-                    {{ $t($getLanguageKey($route)).about }}
+                    {{ localeData.about }}
                 </nuxt-link>
             </div>
             <div class="lang">
-                <button class="button--grey" @click="$getLanguage($route, 'zh-TW')">
-                    zh-TW
+                <button class="button--grey" @click="$switchLanguage($route, 'zh')">
+                    中文
                 </button>
-                <button class="button--grey" @click="$getLanguage($route, 'en')">
+                <button class="button--grey" @click="$switchLanguage($route, 'en')">
                     EN
                 </button>
             </div>
@@ -42,10 +42,23 @@
 export default {
     name: 'Index',
     head () {
-        const i18nSeo = this.$nuxtI18nSeo()
+        const i18nSeo = this.$nuxtI18nSeo({ addSeoAttributes: true })
         return {
             title: 'Home',
-            ...i18nSeo
+            htmlAttrs: {
+                ...i18nSeo.htmlAttrs
+            },
+            meta: [
+                ...i18nSeo.meta
+            ],
+            link: [
+                ...i18nSeo.link
+            ]
+        }
+    },
+    computed: {
+        localeData () {
+            return this.$t(this.$getLanguageKey(this.$route))
         }
     }
 }

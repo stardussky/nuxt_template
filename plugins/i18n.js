@@ -1,5 +1,5 @@
 
-export default ({ app, store, route }, inject) => {
+export default ({ app, store, route, error }, inject) => {
     const getLanguageKey = (route) => {
         const { name, params: _params } = route
         const [params] = Object.values(_params)
@@ -14,15 +14,16 @@ export default ({ app, store, route }, inject) => {
 
         const temp = store.state.language.lang[key]
         if (!temp) {
-            try {
-                let url = `/api/lang/${route.name}`
-                if (params) url += `/${params}`
+            let url = `/api/lang/${route.name}`
+            if (params) url += `/${params}`
 
-                const langMessage = await store.dispatch('AJAX', { url })
-                app.i18n.mergeLocaleMessage(locale, { [key]: langMessage })
-                store.commit('language/SET_LANG', { name: key, data: langMessage })
-            } catch (e) {
-                console.error(`${e.name}: ${e.message} (Lang Not Found)`)
+            const { status, data } = await store.dispatch('AJAX', { url })
+            if (status === 200) {
+                app.i18n.mergeLocaleMessage(locale, { [key]: data })
+                store.commit('language/SET_LANG', { name: key, data })
+            } else {
+                error({ statusCode: status, message: data.message })
+                console.error(`${status} ${data.message}`)
             }
             return
         }
@@ -30,9 +31,17 @@ export default ({ app, store, route }, inject) => {
 
         language && app.i18n.setLocale(locale)
     }
+    const switchLanguage = (route, lang1, lang2) => {
+        let locale = lang1
+        if (lang2) {
+            locale = app.i18n.locale === lang1 ? lang2 : lang1
+        }
+        getLanguage(route, locale)
+    }
 
     inject('getLanguageKey', getLanguageKey)
     inject('getLanguage', getLanguage)
+    inject('switchLanguage', switchLanguage)
 
     return getLanguage(route)
 }
