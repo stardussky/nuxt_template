@@ -16,10 +16,12 @@ html,
 body {
     @include typo("body", 1);
 
+    min-width: 320px;
     font-family: map-get($font-family, default);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
+    touch-action: none;
 }
 
 *,
@@ -36,6 +38,15 @@ textarea {
 
     border: none;
     appearance: none;
+}
+
+pre {
+    white-space: pre-line;
+}
+
+::selection {
+    color: map-get($colors, white);
+    background: map-get($colors, black);
 }
 
 a {
