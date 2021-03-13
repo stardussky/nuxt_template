@@ -27,12 +27,18 @@
                 </nuxt-link>
             </div>
             <div class="lang">
-                <button class="button--grey" @click="$switchLanguage($route, 'zh')">
+                <nuxt-link
+                    class="button--grey"
+                    :to="$switchLocalePath('zh')"
+                >
                     中文
-                </button>
-                <button class="button--grey" @click="$switchLanguage($route, 'en')">
+                </nuxt-link>
+                <nuxt-link
+                    class="button--grey"
+                    :to="$switchLocalePath('en')"
+                >
                     EN
-                </button>
+                </nuxt-link>
             </div>
         </div>
     </div>
@@ -58,7 +64,7 @@ export default {
     },
     computed: {
         localeData () {
-            return this.$t(this.$getLanguageKey(this.$route))
+            return this.$t('index')
         }
     }
 }

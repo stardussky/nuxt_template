@@ -3,7 +3,7 @@
         <div>
             <Logo />
             <h1 class="title">
-                {{ $t($getLanguageKey($route)).message }}
+                {{ localeData.message }}
             </h1>
             <div class="links">
                 <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
@@ -16,7 +16,25 @@
 
 <script>
 export default {
-    name: 'PageEnd'
+    name: 'PageEnd',
+    beforeRouteEnter (to, from, next) {
+        next((vm) => {
+            vm.route = {
+                params: to.params,
+                query: to.query
+            }
+        })
+    },
+    data () {
+        return {
+            route: null
+        }
+    },
+    computed: {
+        localeData () {
+            return this.$t(this.$translateUrl('all', this.route || this.$route).routeName)
+        }
+    }
 }
 </script>
 

@@ -8,6 +8,7 @@ export default {
         APP_TITLE: '',
         APP_TITLE_TEMPLATE: '',
         APP_DESC: '',
+        APP_DEFAULT_LANG: '',
         APP_URL: '',
         APP_API: '',
         APP_BACKEND_API: ''
@@ -100,6 +101,14 @@ export default {
     },
     i18n: {
         baseUrl: process.env.APP_URL,
+        defaultLocale: process.env.APP_DEFAULT_LANG,
+        vueI18n: {
+            fallbackLocale: process.env.APP_DEFAULT_LANG
+        },
+        detectBrowserLanguage: {
+            fallbackLocale: process.env.APP_DEFAULT_LANG,
+            onlyOnRoot: true
+        },
         locales: [
             {
                 code: 'zh',
@@ -110,13 +119,10 @@ export default {
                 iso: 'en-US'
             }
         ],
-        defaultLocale: 'zh',
-        detectBrowserLanguage: {
-            fallbackLocale: 'zh',
-            onlyOnRoot: true
-        },
         routesNameSeparator: '_',
-        seo: false
+        skipSettingLocaleOnNavigate: true,
+        seo: false,
+        vuex: false
     },
     build: {
         plugins: [

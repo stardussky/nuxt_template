@@ -37,7 +37,7 @@ export default {
     },
     computed: {
         localeData () {
-            return this.$t(this.$getLanguageKey(this.$route))
+            return this.$t('about')
         }
     },
     methods: {
