@@ -1,6 +1,7 @@
 import { mapState } from 'vuex'
 import { debounce } from 'lodash'
-import detectDevice from './detectDevice'
+import { detect } from 'detect-browser'
+import mobileInnerHeight from './mobileInnerHeight'
 let innerHeight
 
 const moduleName = 'viewport'
@@ -39,20 +40,16 @@ class Viewport {
         this.store.registerModule(moduleName, storeModule)
 
         if (process.browser) {
-            import('./mobileInnerHeight')
-                .then((module) => {
-                    innerHeight = module.default
-
-                    this.refresh()
-                    window.addEventListener('resize', this.refresh)
-                })
+            innerHeight = mobileInnerHeight()
+            this.refresh()
+            window.addEventListener('resize', this.refresh)
         }
     }
 
     refresh = debounce(() => {
         this.vpWidth = window.innerWidth
         this.vpHeight = innerHeight()
-        this.device = detectDevice()
+        this.device = detect()
 
         this.store.commit(`${moduleName}/SET_INFORMATION`, this.info)
 
@@ -122,16 +119,16 @@ class Viewport {
 
     get isPc () {
         if (this.device) {
-            const { device } = this.device
-            return device === 'pc'
+            const { os } = this.device
+            return os !== 'iOS' && os !== 'Android OS'
         }
         return null
     }
 
     get isIE () {
         if (this.device) {
-            const { browser } = this.device
-            return browser === 'ie'
+            const { name } = this.device
+            return name === 'ie'
         }
         return null
     }

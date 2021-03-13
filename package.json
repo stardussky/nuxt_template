@@ -24,6 +24,7 @@
     "@nuxtjs/axios": "^5.12.5",
     "body-scroll-lock": "^3.1.5",
     "core-js": "^3.8.3",
+    "detect-browser": "^5.2.0",
     "express": "^4.17.1",
     "imagesloaded": "^4.1.4",
     "lodash": "^4.17.20",

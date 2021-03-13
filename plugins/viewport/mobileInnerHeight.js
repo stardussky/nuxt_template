@@ -1,4 +1,4 @@
-export default (() => {
+export default () => {
     const dims = { w: 0, h: 0 }
     const axis = Math.abs(window.orientation)
     let measuringEl = document.createElement('div')
@@ -19,4 +19,4 @@ export default (() => {
         if (axis !== 90) return dims.h
         return dims.w
     }
-})()
+}
