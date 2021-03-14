@@ -50,9 +50,7 @@ router.get('/all/:pathMatch', (req, res) => {
 router.get('/*', function (req, res) {
     res.json({
         status: 500,
-        data: {
-            message: 'lang route not found'
-        }
+        error: 'lang route not found'
     })
 })
 

@@ -43,7 +43,7 @@ export default ({ app, store, route, error }, inject) => {
         const hasTemp = temp[currentLocale]?.[routeName]
         if (!hasTemp) {
             // server side
-            const { status, data } = await store.dispatch('AJAX', { url })
+            const { status, data, ...res } = await store.dispatch('AJAX', { url })
             if (status === 200) {
                 for (const { code: locale } of i18n.locales) {
                     i18n.mergeLocaleMessage(locale, { [routeName]: data[locale] })
@@ -54,8 +54,8 @@ export default ({ app, store, route, error }, inject) => {
                     })
                 }
             } else {
-                // error({ statusCode: status, message: data.message })
-                console.warn(`${status} ${data.message}`)
+                // error({ statusCode: status, message: res.error })
+                console.warn(`${status} ${res.error}`)
             }
             return
         }
