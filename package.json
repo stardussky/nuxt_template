@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "dev-https": "export NODE_TLS_REJECT_UNAUTHORIZED=0 && nuxt --env.NODE_TLS_REJECT_UNAUTHORIZED=0",
     "build": "nuxt build --dotenv .env.production",
     "start": "nuxt start",
     "generate": "nuxt generate",
