@@ -97,7 +97,14 @@ export default {
         'nuxt-webfontloader'
     ],
     axios: {
-        browserBaseURL: process.env.APP_API
+        browserBaseURL: '/api',
+        proxy: true
+    },
+    proxy: {
+        '/api': {
+            target: process.env.APP_API,
+            pathRewrite: { '^/api': '' }
+        }
     },
     svgSprite: {
         input: '~/assets/icons'
