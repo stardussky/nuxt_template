@@ -1,9 +1,9 @@
 <template>
     <transition name="loading">
         <div
-            v-show="loadingConfig.type === 'default' && isLoading"
-            v-lock="loadingConfig.type === 'default' && isLoading"
-            class="loading"
+            v-show="loadingConfig.type === 'ajax' && isLoading"
+            v-lock="loadingConfig.type === 'ajax' && isLoading"
+            class="loading-ajax"
         />
     </transition>
 </template>
@@ -12,7 +12,7 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
-    name: 'Loading',
+    name: 'LoadingAjax',
     computed: {
         ...mapState(['loadingConfig']),
         ...mapGetters(['isLoading']),
@@ -21,13 +21,13 @@ export default {
 </script>
 
 <style lang='scss'>
-.loading {
+.loading-ajax {
     @include size(100%);
 
     position: fixed;
     top: 0;
     left: 0;
-    background-color: map-get($colors, black);
+    background-color: rgba(map-get($colors, white), 0.9);
     z-index: 99;
     cursor: wait;
 

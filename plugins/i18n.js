@@ -50,7 +50,7 @@ export default ({ app, store, route, error }, inject) => {
                     store.commit('i18n/SET_MESSAGE', {
                         locale,
                         key: routeName,
-                        payload: data[locale]
+                        payload: data[locale],
                     })
                 }
             } else {

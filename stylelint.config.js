@@ -96,7 +96,7 @@ module.exports = {
             'box-shadow',
             'text-shadow',
             'resize',
-            'transition'
-        ]
-    }
+            'transition',
+        ],
+    },
 }

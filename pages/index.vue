@@ -45,19 +45,32 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { useStore, onMounted } from '@nuxtjs/composition-api'
 import ImagesLoaded from 'imagesloaded'
 
 export default {
     name: 'Index',
     middleware: 'loadingMiddleware',
+    setup () {
+        const store = useStore()
+
+        onMounted(() => {
+            store.dispatch('ADD_LOADING_STACK', new Promise((resolve) => {
+                new ImagesLoaded('#__nuxt', { background: '[data-background]' }, (instance) => {
+                    resolve()
+                })
+            }))
+
+            store.dispatch('WAIT_LOADING')
+        })
+    },
     head () {
         const i18nSeo = this.$nuxtI18nSeo({ addSeoAttributes: true })
         const { og } = this.localeData
         return {
             title: og?.title,
             htmlAttrs: {
-                ...i18nSeo.htmlAttrs
+                ...i18nSeo.htmlAttrs,
             },
             meta: [
                 { hid: 'og:title', property: 'og:title', content: og?.title },
@@ -71,27 +84,18 @@ export default {
                 { hid: 'og:image', property: 'og:image', content: og?.thumb },
                 { hid: 'twitter:image', name: 'twitter:image', content: og?.thumb },
                 { hid: 'image', itemprop: 'image', content: og?.thumb },
-                ...i18nSeo.meta
+                ...i18nSeo.meta,
             ],
             link: [
-                ...i18nSeo.link
-            ]
+                ...i18nSeo.link,
+            ],
         }
     },
     computed: {
         localeData () {
             return this.$t('index')
-        }
+        },
     },
-    mounted () {
-        /* eslint-disable no-unused-vars */
-        const loader = new ImagesLoaded('#__nuxt', { background: '[data-background]' }, (instance) => {
-            this.DONE_LOADING()
-        })
-    },
-    methods: {
-        ...mapActions(['DONE_LOADING'])
-    }
 }
 </script>
 

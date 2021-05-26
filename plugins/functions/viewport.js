@@ -1,65 +1,39 @@
-import { mapState } from 'vuex'
 import { debounce } from 'lodash'
 import { detect } from 'detect-browser'
 import mobileInnerHeight from './mobileInnerHeight'
-let innerHeight
 
-const moduleName = 'viewport'
+let innerHeight
 const getterKeys = ['vpWidth', 'vpHeight', 'device', 'mediaType', 'isDesktop', 'isTablet', 'isMobile', 'isPc', 'isIE']
 
-const storeModule = {
-    namespaced: true,
-    state: () => getterKeys.reduce((acc, curr) => {
-        acc[curr] = null
-        return acc
-    }, {}),
-    mutations: {
-        SET_INFORMATION (state, payload) {
-            for (const [key, value] of Object.entries(payload)) {
-                if (state[key] !== undefined) {
-                    state[key] = value
-                }
-            }
-        }
-    }
-}
-
 class Viewport {
-    constructor (store) {
-        this.store = store
+    constructor () {
         this.information = {
             width: 0,
             height: 0,
-            device: null,
+            device: detect(),
             media: {
                 mobile: '(max-width: 767px)',
                 tablet: '(max-width: 1199px) and (min-width: 768px)',
-                desktop: '(min-width:1200px)'
-            }
+                desktop: '(min-width:1200px)',
+            },
         }
-        this.store.registerModule(moduleName, storeModule)
 
         if (process.browser) {
             innerHeight = mobileInnerHeight()
             this.refresh()
-            this.refresh = debounce(this.refresh.bind(this), 200)
             window.addEventListener('resize', this.refresh)
         }
     }
 
-    refresh () {
+    refresh = debounce(() => {
         this.vpWidth = window.innerWidth
         this.vpHeight = innerHeight(true)
         this.device = detect()
 
-        this.store.commit(`${moduleName}/SET_INFORMATION`, this.info)
-
         this.onResize?.()
-    }
+    }, 200)
 
     destroy () {
-        this.store.unregisterModule(moduleName)
-
         window.removeEventListener('resize', this.refresh)
     }
 
@@ -103,7 +77,7 @@ class Viewport {
                 }
             }
         }
-        return null
+        return true
     }
 
     get isDesktop () {
@@ -119,28 +93,20 @@ class Viewport {
     }
 
     get isPc () {
-        if (this.device) {
+        if (process.browser) {
             const { os } = this.device
             return os !== 'iOS' && os !== 'Android OS'
         }
-        return null
+        return true
     }
 
     get isIE () {
-        if (this.device) {
+        if (process.browser) {
             const { name } = this.device
             return name === 'ie'
         }
-        return null
+        return true
     }
 }
 
-export const viewport = getterKeys.reduce((acc, curr) => {
-    acc[curr] = mapState(moduleName, { [curr]: state => state[curr] })
-    return acc
-}, {})
-
-export default ({ store }, inject) => {
-    const vp = new Viewport(store)
-    inject('viewport', vp)
-}
+export default new Viewport()

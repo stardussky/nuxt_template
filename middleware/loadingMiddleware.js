@@ -1,3 +1,3 @@
 export default function ({ app, store, ...context }) {
-    store.commit('SET_LOADING')
+    store.dispatch('ADD_LOADING_STACK', new Promise((resolve) => { resolve() }))
 }
