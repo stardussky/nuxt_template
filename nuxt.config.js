@@ -4,6 +4,11 @@ import Webpack from 'webpack'
 
 export default {
     target: 'server',
+    vue: {
+        config: {
+            productionTip: false,
+        },
+    },
     publicRuntimeConfig: {
         APP_TITLE: '',
         APP_TITLE_TEMPLATE: '',
@@ -78,6 +83,7 @@ export default {
         { src: '@/plugins/directives/index', mode: 'client' },
         { src: '@/plugins/prototype/index', mode: 'client' },
         { src: '@/plugins/svgSupportIE', mode: 'client' },
+        { src: '@/plugins/globalComposition' },
         { src: '@/plugins/i18n' },
     ],
     components: true,

@@ -2,6 +2,9 @@
 
 ## Build Setup
 
+setup .env file
+copy .env.template to .env and .env.production
+
 ```bash
 # install dependencies
 $ yarn install

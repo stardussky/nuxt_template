@@ -7,15 +7,13 @@
 </template>
 
 <script>
-import { ref, provide, computed, onBeforeUnmount } from '@nuxtjs/composition-api'
-import viewport from '@/plugins/functions/viewport'
+import { inject, computed } from '@nuxtjs/composition-api'
 
 export default {
     name: 'DefaultLayout',
     setup () {
-        const vp = ref(viewport)
+        const viewportInfo = inject('viewportInfo')
 
-        const viewportInfo = computed(() => vp.value.info)
         const globalStyle = computed(() => {
             const style = {
                 '--vh': '1vh',
@@ -25,12 +23,6 @@ export default {
             }
             return style
         })
-
-        onBeforeUnmount(() => {
-            vp.value.destroy()
-        })
-
-        provide('viewportInfo', viewportInfo)
 
         return {
             viewportInfo,

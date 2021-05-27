@@ -2,14 +2,15 @@
   "name": "nuxt_template",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "nuxt",
     "dev-https": "export NODE_TLS_REJECT_UNAUTHORIZED=0 && nuxt --env.NODE_TLS_REJECT_UNAUTHORIZED=0",
     "build": "nuxt build --dotenv .env.production",
     "start": "nuxt start --dotenv .env.production",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
-    "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
+    "lint:js": "eslint --fix --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:style": "stylelint --fix \"**/*.{vue,css}\" --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style"
   },
   "lint-staged": {
@@ -32,7 +33,7 @@
     "imagesloaded": "^4.1.4",
     "lodash": "^4.17.20",
     "nuxt": "^2.14.12",
-    "nuxt-i18n": "^6.20.2",
+    "nuxt-i18n": "^6.27.0",
     "nuxt-webfontloader": "^1.1.0",
     "portal-vue": "^2.1.7"
   },
@@ -41,7 +42,7 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/style-resources": "^1.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
-    "@nuxtjs/svg-sprite": "^0.4.11",
+    "@nuxtjs/svg-sprite": "^0.5.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.20.0",
     "eslint-plugin-nuxt": "^2.0.0",
