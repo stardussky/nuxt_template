@@ -1,12 +1,8 @@
 export default ({ app, store, route, error }, inject) => {
     const { i18n } = app
+
     app.nuxt.defaultTransition.beforeEnter = () => {
-        i18n.finalizePendingLocaleChange()
-    }
-    app.router.options.scrollBehavior = async (to, from, savedPosition) => {
-        if (to.name !== from.name) {
-            await i18n.waitForPendingLocaleChange()
-        }
+        app.i18n.finalizePendingLocaleChange()
     }
 
     let currentLocale = i18n.locale
