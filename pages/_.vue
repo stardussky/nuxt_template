@@ -23,12 +23,14 @@ export default {
     beforeRouteEnter (to, from, next) {
         next((vm) => {
             vm.route = {
-                params: to.params,
+                params: { pathMatch: to.params.pathMatch },
                 query: to.query,
             }
         })
     },
-    middleware: 'loadingMiddleware',
+    meta: {
+        loading: true,
+    },
     setup () {
         const store = useStore()
 
@@ -38,8 +40,6 @@ export default {
                     resolve()
                 })
             }))
-
-            store.dispatch('WAIT_LOADING')
         })
     },
     data () {

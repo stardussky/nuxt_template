@@ -33,7 +33,7 @@ router.get('/about', (req, res) => {
     })
 })
 
-router.get('/all/:pathMatch', (req, res) => {
+router.get('/all/*', (req, res) => {
     res.json({
         status: 200,
         data: {
@@ -41,7 +41,7 @@ router.get('/all/:pathMatch', (req, res) => {
                 message: '找不到路徑',
             },
             en: {
-                message: 'Router Not Found',
+                message: 'Page Not Found',
             },
         },
     })
@@ -50,7 +50,7 @@ router.get('/all/:pathMatch', (req, res) => {
 router.get('/*', function (req, res) {
     res.json({
         status: 500,
-        error: 'lang route not found',
+        error: 'Language Route Not Found',
     })
 })
 

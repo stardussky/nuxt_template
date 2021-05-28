@@ -7,11 +7,13 @@
 </template>
 
 <script>
-import { inject, computed } from '@nuxtjs/composition-api'
+import { useStore, useRoute, inject, computed, watch } from '@nuxtjs/composition-api'
 
 export default {
     name: 'DefaultLayout',
-    setup () {
+    setup (props, context) {
+        const store = useStore()
+        const route = useRoute()
         const viewportInfo = inject('viewportInfo')
 
         const globalStyle = computed(() => {
@@ -23,6 +25,11 @@ export default {
             }
             return style
         })
+
+        watch(route, async (to, from) => {
+            await context.parent.$i18n.waitForPendingLocaleChange()
+            store.dispatch('WAIT_LOADING')
+        }, { immediate: true })
 
         return {
             viewportInfo,

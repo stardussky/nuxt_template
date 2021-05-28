@@ -1,5 +1,5 @@
 const LOADING = Object.freeze({
-    MIN_LOAD_TIME: 0,
+    MIN_LOAD_TIME: 500,
     LOADING_TYPE_DEFAULT: 'default',
     LOADING_TYPE_AJAX: 'ajax',
 })
@@ -9,7 +9,7 @@ export const state = () => ({
         minTime: LOADING.MIN_LOAD_TIME,
         type: LOADING.LOADING_TYPE_DEFAULT,
     },
-    loadingStack: [],
+    loadingStack: [new Promise((resolve) => { resolve() })],
 })
 
 export const getters = {
