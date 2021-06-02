@@ -7,12 +7,12 @@ router.get('/index', (req, res) => {
         data: {
             zh: {
                 lang: '中文',
-                about: '關於',
+                about: '關於我們',
                 doc: '文件',
             },
             en: {
                 lang: 'EN',
-                about: 'About',
+                about: 'About Us',
                 doc: 'Documentation',
             },
         },
@@ -24,10 +24,10 @@ router.get('/about', (req, res) => {
         status: 200,
         data: {
             zh: {
-                greet: '嗨 關於',
+                title: '關於我們',
             },
             en: {
-                greet: 'HI about',
+                title: 'About Us',
             },
         },
     })
