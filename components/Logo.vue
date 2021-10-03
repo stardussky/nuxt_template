@@ -15,6 +15,22 @@
     </svg>
 </template>
 
+<script>
+import { useStore, onMounted } from '@nuxtjs/composition-api'
+
+export default {
+    name: 'Logo',
+    setup (props, context) {
+        const store = useStore()
+
+        onMounted(() => {
+            // TODO: async component loading stack
+            // store.dispatch('ADD_LOADING_STACK', new Promise((resolve) => { resolve() }))
+        })
+    },
+}
+</script>
+
 <style>
 .NuxtLogo {
     animation: 1s appear;

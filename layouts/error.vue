@@ -6,7 +6,7 @@
                     {{ error.statusCode + ' ' + error.message }}
                 </p>
                 <div class="links">
-                    <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
+                    <nuxt-link class="button--grey" :to="localePath('/')">
                         BACK
                     </nuxt-link>
                 </div>
@@ -28,7 +28,6 @@ export default {
 </script>
 
 <style lang='scss'>
-
 .page-error {
     .container {
         display: flex;

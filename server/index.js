@@ -1,13 +1,13 @@
 const express = require('express')
 const app = express()
-const lang = require('./lang')
+const pages = require('./pages')
 const data = require('./data')
 
 app.get('/', (req, res) => {
     res.send('api success')
 })
 
-app.use('/lang', lang)
+app.use('/pages', pages)
 app.use('/data', data)
 
 module.exports = {

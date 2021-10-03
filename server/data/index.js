@@ -4,7 +4,7 @@ const router = express.Router()
 
 router.get('/*', function (req, res) {
     res.json({
-        status: 500,
+        statusCode: 500,
         error: 'Data Api Not Found',
     })
 })

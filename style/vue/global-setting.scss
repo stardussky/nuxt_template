@@ -4,7 +4,7 @@
 
 ::selection {
     color: map-get($colors, white);
-    background: map-get($colors, black);
+    background: map-get($colors, primary);
 }
 
 @include get-container();

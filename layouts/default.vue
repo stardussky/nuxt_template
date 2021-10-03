@@ -1,39 +1,20 @@
 <template>
     <div :style="globalStyle">
-        <Nuxt />
+        <Nuxt keep-alive />
         <Header />
-        <LoadingAjax />
-        <LoadingDefault />
+        <Loading />
     </div>
 </template>
 
 <script>
-import { useStore, useRoute, inject, computed, watch } from '@nuxtjs/composition-api'
+import layout from '@/compositions/layout'
 
 export default {
     name: 'DefaultLayout',
     setup (props, context) {
-        const store = useStore()
-        const route = useRoute()
-        const viewportInfo = inject('viewportInfo')
-
-        const globalStyle = computed(() => {
-            const style = {
-                '--vh': '1vh',
-            }
-            if (process.browser) {
-                style['--vh'] = `${window.innerHeight / viewportInfo.value.vpHeight}vh`
-            }
-            return style
-        })
-
-        watch(route, async (to, from) => {
-            await context.parent.$i18n.waitForPendingLocaleChange()
-            store.dispatch('WAIT_LOADING')
-        }, { immediate: true })
+        const { globalStyle } = layout(context)
 
         return {
-            viewportInfo,
             globalStyle,
         }
     },
@@ -41,7 +22,6 @@ export default {
 </script>
 
 <style lang='scss'>
-
 .button--green {
     display: inline-block;
     padding: 10px 30px;

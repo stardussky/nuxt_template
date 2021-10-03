@@ -4,10 +4,10 @@
             <div>
                 <Logo />
                 <h1 class="page-end__title">
-                    {{ localeData.message }}
+                    {{ $t('message') }}
                 </h1>
                 <div class="links">
-                    <nuxt-link class="button--grey" :to="localePath('/', $i18n.locale)">
+                    <nuxt-link class="button--grey" :to="localePath('/')">
                         BACK
                     </nuxt-link>
                 </div>
@@ -17,45 +17,19 @@
 </template>
 
 <script>
-import { useStore, onMounted } from '@nuxtjs/composition-api'
-import functions from '@/compositions/functions'
+import { } from '@nuxtjs/composition-api'
+import page from '@/compositions/page'
 
 export default {
     name: 'PageEnd',
-    beforeRouteEnter (to, from, next) {
-        next((vm) => {
-            vm.route = {
-                params: { pathMatch: to.params.pathMatch },
-                query: to.query,
-            }
-        })
+    setup (props, context) {
+        page(context)
     },
-    meta: {
-        loading: true,
-    },
-    setup () {
-        const store = useStore()
-        const { loadImage } = functions()
-
-        onMounted(() => {
-            store.dispatch('ADD_LOADING_STACK', loadImage())
-        })
-    },
-    data () {
-        return {
-            route: null,
-        }
-    },
-    computed: {
-        localeData () {
-            return this.$t(this.$translateUrl('all', this.route || this.$route).routeName)
-        },
-    },
+    head: {},
 }
 </script>
 
 <style lang='scss'>
-
 .page-end {
     .container {
         display: flex;

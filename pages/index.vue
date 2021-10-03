@@ -2,9 +2,11 @@
     <div class="page-index">
         <div class="container">
             <div>
-                <Logo />
+                <client-only>
+                    <Logo />
+                </client-only>
                 <h1 class="page-index__title">
-                    Nuxt - {{ localeData.lang }}
+                    Nuxt - {{ $t('lang') }}
                 </h1>
                 <div class="page-index__links">
                     <a
@@ -13,7 +15,7 @@
                         rel="noopener noreferrer"
                         class="button--green"
                     >
-                        {{ localeData.doc }}
+                        {{ $t('document') }}
                     </a>
                     <a
                         href="https://github.com/nuxt/nuxt.js"
@@ -44,59 +46,23 @@
 </template>
 
 <script>
-import { useStore, onMounted } from '@nuxtjs/composition-api'
-import functions from '@/compositions/functions'
+import { defineComponent } from '@nuxtjs/composition-api'
+import page from '@/compositions/page'
 
-export default {
+export default defineComponent({
     name: 'PageIndex',
-    meta: {
-        loading: true,
+    components: {
+        Logo: () => process.browser ? import('@/components/Logo.vue') : null,
     },
-    setup () {
-        const store = useStore()
-        const { loadImage } = functions()
-
-        onMounted(() => {
-            store.dispatch('ADD_LOADING_STACK', loadImage())
-        })
+    setup (props, context) {
+        const { root } = context
+        page(context)
     },
-    head () {
-        const i18nSeo = this.$nuxtI18nHead({ addSeoAttributes: true })
-        const { seo } = this.localeData
-        return {
-            title: seo?.title,
-            htmlAttrs: {
-                ...i18nSeo.htmlAttrs,
-            },
-            meta: [
-                { hid: 'og:title', property: 'og:title', content: seo?.title },
-                { hid: 'og:site_name', property: 'og:site_name', content: seo?.title },
-                { hid: 'name', itemprop: 'name', content: seo?.title },
-                { hid: 'twitter:title', name: 'twitter:title', content: seo?.title },
-                { hid: 'description', name: 'description', content: seo?.desc },
-                { hid: 'og:description', property: 'og:description', content: seo?.desc },
-                { hid: 'twitter:description', name: 'twitter:description', content: seo?.desc },
-                { hid: 'og:url', property: 'og:url', content: `${process.env.APP_URL}/${this.getRouteBaseName(this.$route)}` },
-                { hid: 'og:image', property: 'og:image', content: seo?.thumb },
-                { hid: 'twitter:image', name: 'twitter:image', content: seo?.thumb },
-                { hid: 'image', itemprop: 'image', content: seo?.thumb },
-                ...i18nSeo.meta,
-            ],
-            link: [
-                ...i18nSeo.link,
-            ],
-        }
-    },
-    computed: {
-        localeData () {
-            return this.$t('index')
-        },
-    },
-}
+    head: {},
+})
 </script>
 
 <style lang='scss'>
-
 .page-index {
     .container {
         display: flex;

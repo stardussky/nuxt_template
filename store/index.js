@@ -1,13 +1,8 @@
-const LOADING = Object.freeze({
-    MIN_LOAD_TIME: 500,
-    LOADING_TYPE_DEFAULT: 'default',
-    LOADING_TYPE_AJAX: 'ajax',
-})
-
 export const state = () => ({
+    isFirstEnter: true,
     loadingConfig: {
-        minTime: LOADING.MIN_LOAD_TIME,
-        type: LOADING.LOADING_TYPE_DEFAULT,
+        isShow: true,
+        waiting: false,
     },
     loadingStack: [new Promise((resolve) => { resolve() })],
 })
@@ -19,16 +14,19 @@ export const getters = {
 }
 
 export const mutations = {
-    CHANGE_LOADING_TYPE (state, payload) {
-        const type = LOADING[payload]
-        if (type && typeof type === 'string') {
-            state.loadingConfig.type = type
-        }
+    SET_FIRST_ENTER (state) {
+        state.isFirstEnter = false
+    },
+    CHANGE_LOADING_SHOW (state, payload) {
+        state.loadingConfig.isShow = payload
+    },
+    CHANGE_LOADING_WAITING (state, payload) {
+        state.loadingConfig.waiting = payload
     },
     SET_LOADING_STACK (state, payload) {
         state.loadingStack.push(payload)
     },
-    DEL_LOADING_STACK (state, payload) {
+    DEL_LOADING_STACK (state) {
         state.loadingStack.shift()
     },
 }
@@ -48,9 +46,16 @@ export const actions = {
             })
         })
     },
-    ADD_LOADING_STACK ({ state, commit }, payload) {
-        if (Array.isArray(payload)) {
-            const promise = Promise.all(payload.filter(p => p instanceof Promise))
+    ADD_LOADING_STACK ({ state, dispatch, commit }, payload) {
+        if (payload instanceof Array) {
+            const promise = Promise.allSettled(payload.filter(p => p instanceof Promise)).then((results) => {
+                results.forEach(({ status, reason }) => {
+                    if (status === 'rejected') {
+                        console.warn(`Loading Rejected: ${reason}`)
+                    }
+                })
+                return results
+            })
             commit('SET_LOADING_STACK', promise)
             return promise
         }
@@ -59,13 +64,22 @@ export const actions = {
             return payload
         }
     },
-    WAIT_LOADING ({ state, commit }) {
-        const startTime = Date.now()
-        return Promise.all(state.loadingStack).then((results) => {
-            const endTime = Date.now()
-            setTimeout(() => {
-                results.forEach(result => commit('DEL_LOADING_STACK'))
-            }, state.loadingConfig.minTime - (endTime - startTime))
-        })
+    WAIT_LOADING ({ state, getters, dispatch, commit }) {
+        if (!state.loadingConfig.waiting) {
+            commit('CHANGE_LOADING_WAITING', true)
+            return Promise.allSettled(state.loadingStack).then((results) => {
+                results.forEach(({ status, reason }) => {
+                    commit('DEL_LOADING_STACK')
+                    if (status === 'rejected') {
+                        console.warn(`Loading Rejected: ${reason}`)
+                    }
+                })
+                commit('CHANGE_LOADING_WAITING', false)
+                if (getters.isLoading) {
+                    dispatch('WAIT_LOADING')
+                }
+                return results
+            })
+        }
     },
 }

@@ -1,21 +1,25 @@
 export default ({ app, store, route, error }, inject) => {
-    const { i18n } = app
+    const { nuxt, i18n, getRouteBaseName } = app
 
-    app.nuxt.defaultTransition.beforeEnter = () => {
-        app.i18n.finalizePendingLocaleChange()
+    nuxt.defaultTransition.beforeEnter = () => {
+        i18n.finalizePendingLocaleChange()
     }
 
-    const translateUrl = (routeName, { params = {}, query = {} } = {}) => {
-        let url = `/api/lang/${routeName}`
+    i18n.onBeforeLanguageSwitch = (oldLocale, newLocale, isInitialSetup, { route }) => {
+        setLocaleData(route, newLocale)
+    }
+
+    const translateUrl = (route) => {
+        let routeName = getRouteBaseName(route)
+        const { params, query } = route
+        let url = `/api/pages/${routeName}`
         let paramsPrefix = ''
         let queryPrefix = ''
 
         const paramsEntries = Object.entries(params)
         if (paramsEntries.length) {
             let [[key, value]] = paramsEntries
-            if (!process.browser) {
-                value = encodeURIComponent(value)
-            }
+            value = encodeURIComponent(decodeURIComponent(value))
             url += `/${value}`
             paramsPrefix += `_${key}${value}`
         }
@@ -25,9 +29,7 @@ export default ({ app, store, route, error }, inject) => {
             url += '?'
             queryPrefix += '_'
             queryEntries.forEach(([key, value]) => {
-                if (!process.browser) {
-                    value = encodeURIComponent(value)
-                }
+                value = encodeURIComponent(decodeURIComponent(value))
                 url += `${key}=${value}&`
                 queryPrefix += `${key}${value}`
             })
@@ -38,40 +40,41 @@ export default ({ app, store, route, error }, inject) => {
         return { url, routeName, paramsPrefix, queryPrefix }
     }
 
-    const setLocaleData = async (baseName, request) => {
-        const { url, routeName } = translateUrl(baseName, request)
-        const temp = store.state.i18n.messages
-        const hasTemp = temp[i18n.locale]?.[routeName]
+    const setLocaleData = async (route, locale) => {
+        locale = locale || i18n.locale
+        let { url, routeName } = translateUrl(route)
+        const messages = store.state.i18n.messages
+        const temp = messages[locale]?.[routeName]
 
-        if (!hasTemp) {
+        if (!temp) {
             // server side
-            const { status, data, ...res } = await store.dispatch('AJAX', { url })
-            if (status === 200) {
+            url += ~url.indexOf('?') ? `lang=${locale}` : `?lang=${locale}`
+            const { statusCode, data, ...res } = await store.dispatch('AJAX', { url })
+            if (statusCode === 200) {
                 for (const { code: locale } of i18n.locales) {
-                    i18n.mergeLocaleMessage(locale, { [routeName]: data[locale] })
-                    store.commit('i18n/SET_MESSAGE', {
-                        locale,
-                        key: routeName,
-                        payload: data[locale],
-                    })
+                    i18n.mergeLocaleMessage(locale, data)
                 }
+                store.commit('i18n/SET_MESSAGE', {
+                    locale,
+                    key: routeName,
+                    payload: data,
+                })
+                // console.log(i18n.getLocaleMessage(i18n.locale))
             } else {
-                error({ statusCode: status, message: res.error })
-            }
-            if (res.error) {
-                console.warn(`${status} ${res.error}`)
+                // error({ statusCode, message: res.error })
+                console.warn(res.error)
             }
             return
         }
         // client side
-        for (const [locale, data] of Object.entries(temp)) {
-            i18n.mergeLocaleMessage(locale, { [routeName]: data[routeName] })
+        for (const { code: locale } of i18n.locales) {
+            i18n.mergeLocaleMessage(locale, temp)
         }
     }
 
     // client side
     if (process.browser) {
-        setLocaleData(app.getRouteBaseName(route), route)
+        setLocaleData(route)
     }
 
     inject('translateUrl', translateUrl)

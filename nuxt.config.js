@@ -14,6 +14,7 @@ export default {
         APP_TITLE_TEMPLATE: '',
         APP_DESC: '',
         APP_DEFAULT_LANG: '',
+        APP_PORT: '',
         APP_URL: '',
         APP_API: '',
         APP_BACKEND_API: '',
@@ -25,6 +26,7 @@ export default {
     serverMiddleware: ['@/server/index'],
     server: {
         host: '0.0.0.0',
+        port: process.env.APP_PORT,
         // https: {
         //     key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
         //     cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem'))
@@ -34,7 +36,7 @@ export default {
         title: process.env.APP_TITLE,
         titleTemplate: `%s | ${process.env.APP_TITLE_TEMPLATE}`,
         htmlAttrs: {
-            lang: 'zh',
+            lang: process.env.APP_DEFAULT_LANG,
         },
         meta: [
             { name: 'googlebot', content: 'noindex' }, // TODO: 正式上線後刪除
@@ -88,23 +90,32 @@ export default {
         { src: '@/plugins/globalComposition' },
         { src: '@/plugins/i18n' },
     ],
-    components: true,
+    components: [
+        {
+            path: '@/components',
+            pathPrefix: false,
+        },
+    ],
     buildModules: [
         '@nuxtjs/composition-api/module',
         '@nuxtjs/eslint-module',
         '@nuxtjs/stylelint-module',
         '@nuxtjs/style-resources',
+        '@nuxtjs/device',
     ],
     modules: [
         ['@nuxtjs/component-cache', { maxAge: 1000 * 60 * 60 }],
+        '@nuxtjs/i18n',
         '@nuxtjs/axios',
         '@nuxtjs/svg-sprite',
         'nuxt-rfg-icon',
-        'nuxt-i18n',
         'nuxt-route-meta',
         'portal-vue/nuxt',
         'nuxt-webfontloader',
     ],
+    device: {
+        refreshOnResize: true,
+    },
     axios: {
         browserBaseURL: '/api',
         proxy: true,

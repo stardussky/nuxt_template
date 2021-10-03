@@ -1,13 +1,13 @@
 <template>
     <div class="header">
-        <div class="header__logo">
+        <nuxt-link class="header__logo" :to="localePath('/')">
             <img src="@/assets/icons/logo.svg" alt="logo" width="60">
-        </div>
+        </nuxt-link>
         <nav class="header__nav">
             <ul class="header__nav-main">
                 <li>
-                    <nuxt-link :to="localePath('/about', $i18n.locale)">
-                        {{ localeData.about }}
+                    <nuxt-link :to="localePath('/about')">
+                        {{ $t('about') }}
                     </nuxt-link>
                 </li>
             </ul>
@@ -20,11 +20,6 @@
 export default {
     name: 'Header',
     setup (props, context) {
-    },
-    computed: {
-        localeData () {
-            return this.$t('index')
-        },
     },
 }
 </script>
