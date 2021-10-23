@@ -1,5 +1,5 @@
 export default ({ app, store, route, error }, inject) => {
-    const { nuxt, i18n, getRouteBaseName } = app
+    const { nuxt, i18n, localePath } = app
 
     nuxt.defaultTransition.beforeEnter = () => {
         i18n.finalizePendingLocaleChange()
@@ -9,60 +9,55 @@ export default ({ app, store, route, error }, inject) => {
         setLocaleData(route, newLocale)
     }
 
-    const translateUrl = (route) => {
-        let routeName = getRouteBaseName(route)
-        const { params, query } = route
-        let url = `/api/pages/${routeName}`
-        let paramsPrefix = ''
-        let queryPrefix = ''
+    const translateUrl = (route, locale = i18n.defaultLocale) => {
+        const { path, query } = route
+        const routeBasePath = localePath(path, i18n.defaultLocale)
 
-        const paramsEntries = Object.entries(params)
-        if (paramsEntries.length) {
-            let [[key, value]] = paramsEntries
-            value = encodeURIComponent(decodeURIComponent(value))
-            url += `/${value}`
-            paramsPrefix += `_${key}${value}`
+        let url = `/api/pages${routeBasePath}`
+
+        const params = new URLSearchParams()
+        params.append('lang', locale)
+        if (query) {
+            for (const key in query) {
+                const value = query[key]
+                params.append(key, value)
+            }
         }
+        url += `?${params}`
 
-        const queryEntries = Object.entries(query)
-        if (queryEntries.length) {
-            url += '?'
-            queryPrefix += '_'
-            queryEntries.forEach(([key, value]) => {
-                value = encodeURIComponent(decodeURIComponent(value))
-                url += `${key}=${value}&`
-                queryPrefix += `${key}${value}`
-            })
-        }
-
-        routeName += paramsPrefix + queryPrefix
-
-        return { url, routeName, paramsPrefix, queryPrefix }
+        return { url }
     }
 
     const setLocaleData = async (route, locale) => {
         locale = locale || i18n.locale
-        let { url, routeName } = translateUrl(route)
+        let { url } = translateUrl(route, locale)
         const messages = store.state.i18n.messages
-        const temp = messages[locale]?.[routeName]
+        const temp = messages[locale]?.[url]
 
         if (!temp) {
             // server side
-            url += ~url.indexOf('?') ? `lang=${locale}` : `?lang=${locale}`
-            const { statusCode, data, ...res } = await store.dispatch('AJAX', { url })
-            if (statusCode === 200) {
+            let data
+            try {
+                if (process.browser) {
+                    data = await store.dispatch('ADD_LOADING_STACK', store.dispatch('AJAX', { url }))
+                } else {
+                    data = await store.dispatch('AJAX', { url })
+                }
+            } catch (e) {
+                let status
+                ({ status, data } = e.response)
+                url = 'error'
+                error({ status, message: data.message || e.message })
+                console.warn(`${status} ${data.message || e.message}`)
+            } finally {
                 for (const { code: locale } of i18n.locales) {
                     i18n.mergeLocaleMessage(locale, data)
                 }
                 store.commit('i18n/SET_MESSAGE', {
                     locale,
-                    key: routeName,
+                    key: url,
                     payload: data,
                 })
-                // console.log(i18n.getLocaleMessage(i18n.locale))
-            } else {
-                // error({ statusCode, message: res.error })
-                console.warn(res.error)
             }
             return
         }

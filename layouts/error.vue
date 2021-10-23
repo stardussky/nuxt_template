@@ -3,7 +3,7 @@
         <div class="container">
             <div>
                 <p class="page-error__title">
-                    {{ error.statusCode + ' ' + error.message }}
+                    {{ error.status + ' ' + error.message }}
                 </p>
                 <div class="links">
                     <nuxt-link class="button--grey" :to="localePath('/')">
@@ -16,7 +16,10 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from '@nuxtjs/composition-api'
+import page from '@/compositions/page'
+
+export default defineComponent({
     name: 'Error',
     props: {
         error: {
@@ -24,7 +27,12 @@ export default {
             required: true,
         },
     },
-}
+    setup (props, context) {
+        const { root } = context
+        page(context)
+    },
+    head: {},
+})
 </script>
 
 <style lang='scss'>

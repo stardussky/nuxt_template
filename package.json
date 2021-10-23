@@ -22,6 +22,9 @@
       "pre-commit": "lint-staged"
     }
   },
+  "_moduleAliases": {
+    "@": "."
+  },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/component-cache": "^1.1.6",
@@ -34,6 +37,7 @@
     "express": "^4.17.1",
     "imagesloaded": "^4.1.4",
     "lodash": "^4.17.21",
+    "module-alias": "^2.2.2",
     "nuxt": "^2.15.8",
     "nuxt-route-meta": "^2.3.2",
     "nuxt-webfontloader": "^1.1.0",

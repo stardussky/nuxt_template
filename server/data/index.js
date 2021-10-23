@@ -3,10 +3,13 @@ const router = express.Router()
 // const axios = require('../plugins/axios')
 
 router.get('/*', function (req, res) {
-    res.json({
-        statusCode: 500,
-        error: 'Data Api Not Found',
-    })
+    const status = 500
+    res
+        .status(status)
+        .send({
+            status,
+            message: 'Internal Server Error',
+        })
 })
 
 module.exports = router

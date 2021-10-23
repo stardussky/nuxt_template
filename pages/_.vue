@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import { } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import page from '@/compositions/page'
 
-export default {
+export default defineComponent({
     name: 'PageEnd',
     setup (props, context) {
         page(context)
     },
     head: {},
-}
+})
 </script>
 
 <style lang='scss'>

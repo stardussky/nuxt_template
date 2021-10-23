@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import { useStore, useFetch } from '@nuxtjs/composition-api'
+import { defineComponent, useStore, useFetch } from '@nuxtjs/composition-api'
 import page from '@/compositions/page'
 
-export default {
+export default defineComponent({
     name: 'About',
     meta: {
         loading: false,
@@ -30,7 +30,7 @@ export default {
         })
     },
     head: {},
-}
+})
 </script>
 
 <style lang="scss">
